@@ -92,13 +92,14 @@ public:
 		ELevelTick TickType,
 		FActorComponentTickFunction* ThisTickFunction
 	) override;
+	UFUNCTION(BlueprintCallable)
+	void SetDefaultFOV(float NewDefaultFOV, bool bImmediate = false);
 
 #pragma endregion
 
 #pragma region Internal Function
 
 	void ResetFOVImmediately();
-	void SetDefaultFOV(float NewDefaultFOV, bool bImmediate = false);
 	float CalculateTargetFOV(float CurrentSpeed) const;
 
 #pragma endregion

@@ -139,6 +139,13 @@ public:
 	)
 	void SetControlled(ACharacter* Character);
 
+	UFUNCTION(
+		BlueprintCallable,
+		Category = "SingularisFirstPerson|引力奇点角色控制器组件|API",
+		meta = (DisplayName = "SetSensitivity")
+	)
+	void SetSensitivity(float Sensitivity);
+	
 #pragma endregion
 
 private:

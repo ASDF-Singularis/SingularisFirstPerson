@@ -101,6 +101,11 @@ void USingularisCharacterControllerComponent::SetControlled(ACharacter* Characte
 	RefreshInputMappingContext();
 }
 
+void USingularisCharacterControllerComponent::SetSensitivity(float Sensitivity)
+{
+	CameraSensitivity = Sensitivity;
+}
+
 void USingularisCharacterControllerComponent::BindInputAction()
 {
 	if (!OwnerPlayerController.IsValid() || !OwnerPlayerController->IsLocalController()) return;
