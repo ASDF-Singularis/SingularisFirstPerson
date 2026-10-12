@@ -31,7 +31,7 @@ ASingularisLoFiCharacter::ASingularisLoFiCharacter()
 	SpringArmComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 60.0f));
 	SpringArmComponent->TargetArmLength = 0.0f;
 	SpringArmComponent->bUsePawnControlRotation = true;
-	SpringArmComponent->bEnableCameraLag = true;
+	SpringArmComponent->bEnableCameraLag = false;
 	SpringArmComponent->bEnableCameraRotationLag = true;
 	SpringArmComponent->CameraLagSpeed = 15.0;
 
