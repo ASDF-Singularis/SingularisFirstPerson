@@ -145,7 +145,7 @@ public:
 		meta = (DisplayName = "SetSensitivity")
 	)
 	void SetSensitivity(float Sensitivity);
-	
+
 #pragma endregion
 
 private:

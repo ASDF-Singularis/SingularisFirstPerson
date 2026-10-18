@@ -1,10 +1,11 @@
-﻿#include "Actors/SingularisFirstPersonCharacter.h"
+#include "Actors/SingularisFirstPersonCharacter.h"
 
 #include <Animation/AnimInstance.h>
 #include <Camera/CameraComponent.h>
 #include <Components/CapsuleComponent.h>
 #include <Components/SkeletalMeshComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include <GameFramework/SpringArmComponent.h>
 #include <UObject/ConstructorHelpers.h>
 
 ASingularisFirstPersonCharacter::ASingularisFirstPersonCharacter()
@@ -42,10 +43,18 @@ ASingularisFirstPersonCharacter::ASingularisFirstPersonCharacter()
 	FirstPersonMeshComponent->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::FirstPerson;
 	FirstPersonMeshComponent->SetCollisionProfileName(FName("NoCollision"));
 
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	SpringArmComponent->SetupAttachment(FirstPersonMeshComponent, FName("head"));
+	SpringArmComponent->SetRelativeLocation(FVector(-2.8f, 5.89f, 0.0f));
+	SpringArmComponent->TargetArmLength = 0.0f;
+	SpringArmComponent->bDoCollisionTest = false;
+	SpringArmComponent->bUsePawnControlRotation = true;
+	SpringArmComponent->bEnableCameraLag = false;
+	SpringArmComponent->bEnableCameraRotationLag = true;
+	SpringArmComponent->CameraLagSpeed = 15.0f;
+
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	CameraComponent->SetupAttachment(FirstPersonMeshComponent, FName("head"));
-	CameraComponent->SetRelativeLocationAndRotation(FVector(-2.8f, 5.89f, 0.0f), FRotator(0.0f, 90.0f, -90.0f));
-	CameraComponent->bUsePawnControlRotation = true;
+	CameraComponent->SetupAttachment(SpringArmComponent);
 	CameraComponent->bEnableFirstPersonFieldOfView = true;
 	CameraComponent->bEnableFirstPersonScale = true;
 	CameraComponent->FirstPersonFieldOfView = 90.0f;
@@ -59,6 +68,12 @@ ASingularisFirstPersonCharacter::ASingularisFirstPersonCharacter()
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
 	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
+
+	// 第三人称网格是 ABP_FP_Copy 的姿态源，第一人称网格承载摄像机挂点；
+	// 两者都必须在不可见时继续求值，否则姿态及其骨骼变换会冻结。
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	FirstPersonMeshComponent->VisibilityBasedAnimTickOption =
+		EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 
 	GetCapsuleComponent()->SetCapsuleSize(34.0f, 96.0f);
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;

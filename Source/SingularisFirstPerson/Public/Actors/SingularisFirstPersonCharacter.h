@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <CoreMinimal.h>
 #include <GameFramework/Character.h>
@@ -6,6 +6,7 @@
 #include "SingularisFirstPersonCharacter.generated.h"
 
 class UCameraComponent;
+class USpringArmComponent;
 
 UCLASS(Abstract, Blueprintable)
 class SINGULARISFIRSTPERSON_API ASingularisFirstPersonCharacter : public ACharacter
@@ -15,6 +16,9 @@ class SINGULARISFIRSTPERSON_API ASingularisFirstPersonCharacter : public ACharac
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> FirstPersonMeshComponent = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<USpringArmComponent> SpringArmComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> CameraComponent = nullptr;
